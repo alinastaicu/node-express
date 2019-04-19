@@ -5,32 +5,45 @@ const dishRouter = express.Router();
 
 dishRouter.use(bodyParser.json());
 
-/*the express router supports this route end point. On the route end point,
- you simply specify the end point on which this router is going to work.
-  And then, the get put portion delete method, this simply chained into that.*/
 dishRouter
   .route('/')
   .all((req, res, next) => {
     res.statusCode = 200;
     res.setHeader('Content-Type', 'text/plain');
-    next(); //pass the paramenter to get
+    next();
   })
-
   .get((req, res, next) => {
     res.end('Will send all the dishes to you!');
   })
-
   .post((req, res, next) => {
     res.end('Will add the dish: ' + req.body.name + ' with details: ' + req.body.description);
   })
-
   .put((req, res, next) => {
     res.statusCode = 403;
     res.end('PUT operation not supported on /dishes');
   })
-
   .delete((req, res, next) => {
     res.end('Deleting all the dishes!');
+  });
+
+dishRouter
+  .route('/:dishId')
+  .get((req, res, next) => {
+    res.end('Will send details of the dish: ' + req.params.dishId + ' to you!');
+  })
+
+  .post((req, res, next) => {
+    res.statusCode = 403;
+    res.end('POST operation not supported on /dishes/' + req.params.dishId);
+  })
+
+  .put((req, res, next) => {
+    res.write('Updating the dish: ' + req.params.dishId + '\n');
+    res.end('Will update the dish: ' + req.body.name + ' with details: ' + req.body.description);
+  })
+
+  .delete((req, res, next) => {
+    res.end('Deleting dishId: ' + req.params.dishId);
   });
 
 module.exports = dishRouter;

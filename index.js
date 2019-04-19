@@ -1,9 +1,11 @@
 const express = require('express');
 const http = require('http');
-const morgan = require('morgan'); //morgan is used to log information to the screen
+const morgan = require('morgan');
 const bodyParser = require('body-parser');
 
 const dishRouter = require('./routes/dishRouter');
+const promoRouter = require('./routes/promoRouter');
+const ledearRouter = require('./routes/ledearRouter');
 
 const hostname = 'localhost';
 const port = 3000;
@@ -13,12 +15,9 @@ app.use(morgan('dev'));
 app.use(bodyParser.json());
 
 app.use('/dishes', dishRouter);
-/* This tells Express to serve up the static files from double underscore dirname. 
-This says the root of this project and they will find those files in double_dirname, 
-plus/ public. So, recall that we created the public folder in the node Express folder.
-So, this is informing Express that you will look at this particular folder in the root 
-folder of this project and inside the public folder.
- */
+app.use('/promotions', promoRouter);
+app.use('/leaders', ledearRouter);
+
 app.use(express.static(__dirname + '/public'));
 
 app.use((req, res, next) => {
