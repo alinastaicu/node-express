@@ -1,13 +1,21 @@
 const express = require('express');
 const http = require('http');
-
+const morgan = require('morgan'); //Morgan is used to log information to the screen
 const hostname = 'localhost';
 const port = 3000;
 
 const app = express();
+app.use(morgan('dev'));
+
+/* This tells Express to serve up the static files from double underscore dirname. 
+This says the root of this project and they will find those files in double_dirname, 
+plus/ public. So, recall that we created the public folder in the node Express folder.
+So, this is informing Express that you will look at this particular folder in the root 
+folder of this project and inside the public folder.
+ */
+app.use(express.static(__dirname + '/public'));
 
 app.use((req, res, next) => {
-  console.log(req.header);
   res.statusCode = 200;
   res.setHeader('Content-Type', 'text/html');
   res.end('<html><body><h1>This is an Express Server</h1></body></html>');
